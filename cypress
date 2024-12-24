@@ -1,0 +1,98 @@
+/// <reference types="cypress"/>
+ 
+describe('Login Feature',() => {
+   it('Login dengan username dan password benar',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('Admin');
+       cy.get('[name="password"]').type('admin123');
+       cy.intercept("GET","**/employees/action-summary").as("actionsummary");
+       cy.get('[type="submit"]').click();
+       cy.wait("@actionsummary").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+       cy.get('[class="oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module"]').should('have.text','Dashboard')
+    })
+
+    it('Login dengan username benar dan password salah',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('Admin');
+       cy.get('[name="password"]').type('@Admin1234');
+       cy.get('[type="submit"]').click();
+    })
+
+    it('Login dengan username salah dan password benar',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('Adminnnn');
+       cy.get('[name="password"]').type('admin123');
+       cy.get('[type="submit"]').click();
+    })
+   
+    it('Login dengan username salah dan password salah',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('Adminnn');
+       cy.get('[name="password"]').type('@Admin1234');
+       cy.get('[type="submit"]').click();
+    })
+
+    it('Login dengan username benar + huruf kapital dan password benar',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('ADMIN');
+       cy.get('[name="password"]').type('admin123');
+       cy.get('[type="submit"]').click();
+       cy.get('[class="oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module"]').should('have.text','Dashboard')
+    })
+
+    it('Login dengan username benar + huruf kapital dan password benar + huruf kapital',() => {
+      cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+      cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+      cy.get('[name="username"]').type('ADMIN');
+      cy.get('[name="password"]').type('ADMIN123');
+      cy.get('[type="submit"]').click();
+   })
+
+    it('Login dengan username benar dan password benar + huruf kapital',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('admin');
+       cy.get('[name="password"]').type('ADMIN123');
+       cy.get('[type="submit"]').click();
+    })
+
+    it('Login tanpa mengisi username dan password ',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[type="submit"]').click();
+    })
+
+    it('Login tanpa mengisi password ',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="username"]').type('Admin');
+       cy.get('[type="submit"]').click();
+    })
+
+    it('Login tanpa mengisi username ',() => {
+       cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+       cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+       cy.get('[name="password"]').type('admin123');
+       cy.get('[type="submit"]').click();
+    })
+
+    it('Login tanpa mengisi username dan password salah',() => {
+      cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+      cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+      cy.get('[name="password"]').type('admin1234');
+      cy.get('[type="submit"]').click();
+    })
+
+    it('Login tanpa mengisi password dan username salah ',() => {
+      cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+      cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]').should('have.text','Login');
+      cy.get('[name="username"]').type('Admin1234');
+      cy.get('[type="submit"]').click();
+    })
+
+})
